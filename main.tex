@@ -1,0 +1,98 @@
+\documentclass[11pt]{scrartcl}
+\usepackage{comment} % enables the use of multi-line comments (\ifx \fi) 
+\usepackage[english]{babel}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{booktabs}% für Tabelle
+\usepackage{longtable}% für Tabelle
+\usepackage{listings}
+\usepackage[bottom=3cm]{geometry}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage[onehalfspacing]{setspace}
+\usepackage{url}
+\usepackage{tabularx}
+\usepackage{caption}
+\usepackage{eurosym}
+\usepackage{subcaption}
+\usepackage{pdfpages}
+\usepackage{wrapfig}
+\usepackage{color}
+\usepackage{scrlayer-scrpage}%
+\usepackage[T1]{fontenc}% wichtig für Trennung von Wörtern mit Umlauten
+\usepackage{microtype}% verbesserter Randausgleich
+\setlength{\headheight}{21.4pt}
+\usepackage{apacite}
+\usepackage{natbib}
+\usepackage{eurosym}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
+\usepackage{eucal}% Special characters
+\usepackage{amssymb}% math alphabet
+\usepackage[noend]{algpseudocode}
+\usepackage[utf8]{inputenc}
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+%% 11pt + helvetica + ohne %%% Math %%%
+\DeclareMathOperator{\EX}{\mathbb{E}}% expected value
+\DeclareMathOperator*{\argmax}{argmax}
+
+%%% Coding %%%
+\input{jsonDefinition}
+%Pseudo-code indent
+\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
+\algtext*{Indent}
+\algtext*{EndIndent}
+
+%Pseudo-code indent
+\algdef{SE}[SUBALG]{Indent}{EndIndent}{}{\algorithmicend\ }%
+\algtext*{Indent}
+\algtext*{EndIndent}
+
+
+%%%% footer and header %%%%
+\setlength{\parindent}{0em}
+\setlength{\parskip}{2mm}
+\pagestyle{scrheadings}%  S
+\clearscrheadfoot% 
+\automark{section}% 
+\setheadwidth{text}%
+\ihead{\textbf{\pagemark}}
+\renewcommand{\sectionmark}[1]{\markright{\ #1}} 
+\ohead{\rightmark}
+\KOMAoptions{headsepline=0.5pt}%
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+%%%% \footer and header %%%%
+
+% Funktion, um besser Anführungszeichen zu setzen.
+% Einfach \anf{Wort oder Text}
+\newcommand{\anf}[1]{\glqq#1\grqq}
+\begin{document}
+
+\input{titlepage}
+
+% Inhaltsverzeichnis
+\tableofcontents
+\newpage
+
+% Abbildungsverzeichnis
+%\listoffigures
+%\newpage
+\noindent
+
+\input{structure}
+
+\newpage
+\bibliographystyle{apacite}
+\bibliography{sources}
+\newpage
+
+%\appendix
+%\section{Anhang}
+\end{document}

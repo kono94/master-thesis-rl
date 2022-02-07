@@ -1,0 +1,18 @@
+Adding a mechanism to any reinforcement learning algorithm that endorses the exploration of the state and action space is crucial in order to try many different decision paths and find a near optimal policy or \textit{the} optimal policy $\pi^*$. However, the policy that is constantly updated and improved during the learning process tries to fully exploit the environment as much as possible to collect the best returns that are currently know which can lead to the policy getting stuck in a local minimum. This contrast is also known as the exploration–exploitation dilemma \cite[p.~3]{Sutton1998}.
+\par
+The simplest and widely used approach in order to address this problem is the usage of an $\epsilon$-greedy policy, meaning that with probability $\epsilon$ a non-greedy action is taken \cite[p.~100]{Sutton1998}. Nevertheless this method is only suitable for discrete action where the policy selects from a set of actions. For the continuous case, some sort of noise has to be added to the suggested action value outputs of the actor. In the pseudo code, this is illustrated by the following line, where $\mathcal{N}$ is the component that generates the noise.
+\par
+\begin{equation*}
+    a_t = \mu_\theta(s_t) + \mathcal{N}_t
+\end{equation*}
+\par 
+The resulting value 
+In the original DDPG Paper, \cite{lillicrap2019continuous} suggest the usage of a process that generates temporally correlated noise, specifically the Ornstein-Uhlenbeck process (OU process) \cite[]{uhlenbeck1930theory}. The authors justify their decision with the argument that this process very efficiently explores physical control problems with inertia (pp.~4,11). An OU process mainly depends on three variables. The mean of the noise $\mu$, the scale of the noise $\sigma$ and the rate of mean reversion $\theta$.
+\par
+//TODO
+// generate plot of some theta and sigma combinations
+\par
+In later publications that try to improve certain aspects of the DDPG algorithm, it is mentioned that the utilization of the, to some extend complex, OU process is not needed and is in turn replaced by fixed Gaussian Noise. An example of this notion are \cite{fujimoto2018addressing} who state in their work about TD3 (an improved version of DDPG which addresses potential function approximation errors) that they "found noise drawn from the Ornstein-Uhlenbeck process offered no performance benefits" (p.~7). \cite{barth2018distributed} come to the same conclusion who describe that they "experimented with correlated noise drawn from an Ornstein-Uhlenbeck" but they "found this was unnecessary and did
+not add to performance" (p.~5).
+\par
+Although we do not utilize a ship simulation and therefore the environment cannot be directly interpreted as physical problem, we still lay focus on the Ornstein-Uhlenbeck process as the main noise generator. The resulting ship trajectories from the AIS data still depend on the underlying ship dynamics even though they are part of a more abstract layer.
