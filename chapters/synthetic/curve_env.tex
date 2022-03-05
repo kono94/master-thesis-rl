@@ -1,0 +1,5 @@
+This subchapter documents the synthetic environment with its variants summarized under the name of "Curve". The environment simulates the scenario where a ground truth trajectory is given and an agent has to chose suitable actions (e.g. direction and speed) to stay as close to the ground truth as possible. One underlying intend to create this environment is to get a better understanding about the modelling aspect of the overall task. In this connection, the focus is on the state representation and the transition dynamics.
+\par
+Being implemented in the programming language \textit{Python}, this environment implements the popular gym interface "gym.Env" \cite[]{gym} for custom environments. This allows the use of external RL and IL libraries because the gym interface is de-facto standard when it comes to creating and interacting with custom environments.
+\par
+The environment is defined to have an area of width=700 and height=500 pixels, speed boundaries (pixels per timestep) of min=5 and max=40 and unrestricted steering maneuvering (from $-\pi$ to $\pi$).

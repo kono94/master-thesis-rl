@@ -4,7 +4,8 @@
     \input{chapters/introduction/objective}
     \subsection{Motivation}
     \subsection{Structure}
-
+    
+\newpage
 \section{Prerequisites}
     \subsection{RL Framework}\label{chap:rlframework}
     \input{chapters/prerequisites/rl_framework}
@@ -12,10 +13,11 @@
     \input{chapters/prerequisites/history}
     \subsection{Automatic Identification System}
     
+\newpage
 \section{Related Work}
 \input{chapters/related work}
 
-
+\newpage
 \section{Understanding Deep DPG}
 \input{chapters/ddpg/intro}
     \subsection{Actor-Critic Architecture}
@@ -26,6 +28,8 @@
     \input{chapters/ddpg/noise}
     \subsection{Hyper Parameters}
     \input{chapters/ddpg/hyperparameters}
+    
+\newpage
 \section{Imitation Learning}
     \input{chapters/imitation/intro}
         \subsection{Weaknesses of Interactive RL}
@@ -36,3 +40,36 @@
         \input{chapters/imitation/behavior_cloning}
         \subsection{Inverse RL}
         \input{chapters/imitation/inverse_rl}
+\newpage
+\section{Preparatory Experiments}
+\input{chapters/synthetic/intro}
+    \subsection{The Curve-Environment}
+        \input{chapters/synthetic/curve_env}
+        \subsubsection{Synthetic Paths}
+        \input{chapters/synthetic/paths}
+        \subsubsection{Variants}
+        \input{chapters/synthetic/variants}
+        \subsubsection{Reward Function}
+        \input{chapters/synthetic/reward_function}
+        
+    \subsection{Applying DDPG}
+    \subsection{Applying Imitation Learning}
+    \subsection{Libraries}
+        \subsubsection{PyTorch}
+        \subsubsection{Stable-Baselines3}
+        \subsubsection{Imitation}
+        \subsubsection{MovingPandas}
+    
+\newpage
+\section{Predicting Real-World Vessel Paths}\label{chap:realworld}
+    \subsection{Extracting Vessel Trajectories}
+    \subsection{The AIS-Environment}
+    \subsection{Performance Metric}
+    \subsection{Results}
+    \subsection{Tracing Failure}
+ 
+\newpage   
+\section{Conclusions}
+\newpage
+\section{Future Work}
+
