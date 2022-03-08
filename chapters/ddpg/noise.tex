@@ -9,8 +9,44 @@ The simplest and widely used approach in order to address this problem is the us
 The resulting value 
 In the original DDPG Paper, \cite{lillicrap2019continuous} suggest the usage of a process that generates temporally correlated noise, specifically the Ornstein-Uhlenbeck process (OU process) \cite[]{uhlenbeck1930theory}. The authors justify their decision with the argument that this process very efficiently explores physical control problems with inertia (pp.~4,11). An OU process mainly depends on three variables. The mean of the noise $\mu$, the scale of the noise $\sigma$ and the rate of mean reversion $\theta$.
 \par
-//TODO
-// generate plot of some theta and sigma combinations
+
+
+
+\begin{figure}[H]
+    \begin{subfigure}{0.495\textwidth}
+      \centering
+      % include first image
+      \includesvg[width=\textwidth]{images/ou_01_015.svg}  
+      \caption{$\sigma = 0.1, \theta = 0.15$}
+      \label{fig:sub-first}
+    \end{subfigure}
+    \begin{subfigure}{0.495\textwidth}
+      \centering
+      % include first image
+      \includesvg[width=\textwidth]{images/ou_06_015.svg}  
+      \caption{$\sigma = 0.6, \theta = 0.15$}
+      \label{fig:sub-first}
+    \end{subfigure}
+
+\medskip % create some *vertical* separation between the graphs
+    \begin{subfigure}{0.495\textwidth}
+      \centering
+      % include first image
+      \includesvg[width=\textwidth]{images/ou_03_001.svg}  
+      \caption{$\sigma = 0.3, \theta = 0.001$}
+      \label{fig:sub-first}
+    \end{subfigure}
+    \begin{subfigure}{0.495\textwidth}
+      \centering
+      % include first image
+      \includesvg[width=\textwidth]{images/ou_03_07.svg}  
+      \caption{$\sigma = 0.3, \theta = 0.7$}
+      \label{fig:sub-first}
+    \end{subfigure}
+\caption{Influence of different values for $\mu$ and $\theta$ in the OU process.}
+\label{fig:roc}
+\end{figure}
+
 \par
 In later publications that try to improve certain aspects of the DDPG algorithm, it is mentioned that the utilization of the, to some extend complex, OU process is not needed and is in turn replaced by fixed Gaussian Noise. An example of this notion are \cite{fujimoto2018addressing} who state in their work about TD3 (an improved version of DDPG which addresses potential function approximation errors) that they "found noise drawn from the Ornstein-Uhlenbeck process offered no performance benefits" (p.~7). \cite{barth2018distributed} come to the same conclusion who describe that they "experimented with correlated noise drawn from an Ornstein-Uhlenbeck" but they "found this was unnecessary and did
 not add to performance" (p.~5).

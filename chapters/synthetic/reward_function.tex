@@ -3,4 +3,28 @@ The desired goal we want the agent to achieve is to stay as close as possible to
 Additionally a reward signal is built that includes past feedback and can be seen as moving sum or moving average of the prior described reward functions. This reward function is inspired by the work of \cite{edgarod} who set up a reward signal that //todo.
 
 
-// figures of reward function;; equations
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}[b]{0.495\textwidth}
+        \includesvg[width=\textwidth]{images/r1.svg}
+        \label{fig:reward1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.495\textwidth}
+        \includesvg[width=\textwidth]{images/r2.svg}
+        \label{fig:reward2}
+    \end{subfigure}
+    \caption{Different reward functions that map distances between agent and GT positions in pixels to scalar reward values. (a) Gaussian track error. (b) Rectified linear reward function}
+    \label{fig:rewardFunctions}
+\end{figure}
+
+\begin{equation}
+\begin{aligned}
+    R1 := f_{R1}(d_t) &= \frac{1}{5 \sqrt{2\pi}} \mathrm{e}^{-\frac{d_t^2}{50}} \cdot 12.5333
+\\
+R2 := f_{R2}(d_t) &= max(1 - \frac{d_t}{10}, 0)
+\\
+    R3 := f_{R3}(d_t) &= \sum_{i=0}^{10}{f_{R1}(d_{t-i})}
+\\
+    R4 := f_{R4}(d_t) &= \frac{f_{R3}(d_t)}{10}
+    \end{aligned}
+\end{equation}

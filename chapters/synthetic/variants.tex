@@ -5,11 +5,31 @@ The interface itself requires the programmer to define an action- and observatio
 \paragraph{States and actions.} Choosing the right state representation is mandatory for the agent to take the correct actions. In this case, the MDP frameworks assumes that the state representation fulfills the \textit{Markov} property which implies that a single state in the present (no history involved) retains all relevant information for the agent to distinguish between different environment setups to be able to make suitable decisions. We will intentionally break this assumption by constructing one variant that has a state representation of just $\{x,y\}$ to the importance of the \textit{Markov} property.
 \par
 To make different trajectories distinguishable by the state representation, the direction has to be added as well. For the simply case, we want the agent to solely select its direction at each timestep and let the environment specify the perfect speed value. A more demanding variant adds the speed component to the state representation and the action space, making them four and two dimensional.
+\par
+The analysis and discussion about the results will show that even a state representation of position, speed and direction might not fulfill the assumption of a markovian state. Hence, we will also try state representations that include the current distance to the GT as well as a representation that contains the current timestep. Incorporating a time component into the state model was already mentioned in the related work section of this thesis (see chapter \ref{chap:relatedWork}) in context of the work proposed by \cite{liu2019vessel} who include a Unix timestamp to their state representation.
 
 \begin{equation}
-    S1 := S_t = \{x,y\}
+\begin{aligned}
+    S1 := S_t &= \{x_t,y_t\}
+\\
+    S2 := S_t &= \{x_t,y_t, direction_t\}
+\\
+    S3 := S_t &= \{x_t,y_t, direction_t, speed_t\}
+\\
+    S4 := S_t &= \{x_t,y_t, direction_t, speed_t, distance_t\}
+\\
+    S5 := S_t &= \{x_t,y_t, direction_t, speed_t, t\}
+    \end{aligned}
 \end{equation}
 
+For clarity, we defined the labels for the action features as "course" and "tempo" to better indicate that they are independent from the "direction" and "speed" features of the state representation.
+\begin{equation}
+\begin{aligned}
+    A1 := A_t &= \{course_t\}
+\\
+    A2 := A_t &= \{course_t, tempo_t\}
+    \end{aligned}
+\end{equation}
 
 \paragraph{Transition dynamics.} The core of every environment are its transition dynamics. Normally, the respective \textit{step}-function is well defined and meant to immutable. What we mean by that is that the environment dynamics are set before the application of any RL algorithms and those algorithms actually try to solve the sequential decision problem that arises by the interaction with the environment. In our case, we try to squeeze the task of predicting future vessel trajectories into the RL framework trying to approach the task in a different way by making an agent interact and select at every timestep instead of for example looking at the problem as a timeseries prediction exercise. Hence, we are in charge of constructing artificial transition dynamics that best fit to our problem. It is even imaginable and most likely unavoidable that an agent trains in one environment but uses its learned policy in another environment with different transition dynamics that depict the real-world use case. This is due to the fact that training has to include some sort of guiding historical ground truth trajectories which are not present in the actually application of predicting paths.
 \par

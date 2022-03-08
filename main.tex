@@ -8,16 +8,18 @@
 \usepackage{booktabs}% für Tabelle
 \usepackage{longtable}% für Tabelle
 \usepackage{listings}
-\usepackage[bottom=3cm]{geometry}
+\usepackage[bottom=3cm, right=2.5cm, left=2.5cm]{geometry}
 \usepackage{float}
 \usepackage{wrapfig}
 \usepackage{amsmath}
+\usepackage{subcaption}
+
 \usepackage[onehalfspacing]{setspace}
 \usepackage{url}
 \usepackage{tabularx}
 \usepackage{caption}
 \usepackage{eurosym}
-\usepackage{subcaption}
+\usepackage{svg}
 \usepackage{pdfpages}
 \usepackage{wrapfig}
 \usepackage{color}
@@ -41,7 +43,7 @@
 %% 11pt + helvetica + ohne %%% Math %%%
 \DeclareMathOperator{\EX}{\mathbb{E}}% expected value
 \DeclareMathOperator*{\argmax}{argmax}
-
+\DeclareMathOperator{\argmin}{\arg\!\min}
 %%% Coding %%%
 \input{jsonDefinition}
 %Pseudo-code indent
