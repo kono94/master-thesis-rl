@@ -1,7 +1,4 @@
-The desired goal we want the agent to achieve is to stay as close as possible to the GT positions in order to generate identical paths. A reward function should consequently assign positive feedback if the agent is near the GT. Punishing the agent with negative rewards if it drifts apart from the GT is not practical because initial experiments show that the agent will just move straight out of bounds to end the episode. Any RL algorithm tries to maximize the return. If the agent continuous to explore the state space, it will repeatedly receive negative rewards which accumulate to a high negative return. However, moving straight out of bounds will result in a return of a few negative rewards which is greater than any attempt to follow the curve. Accordingly, we will use the Gaussian track-error, mentioned in the work of \cite{martinsen2018curved}, as inspiration to construct the reward function. Rewards are exclusively positive, starting at 1 if the positions are the same, and get smaller in proportion to the current distance between the agent's position and the GT's position. \cite{martinsen2018curved} use a normal distribution to determine the scalar reward based on the distance (p.~X). At the beginning of our modelling and experiment phase, we make use of a customized version of such a normal distribution as reward function as well. Besides, we come up with another reward function which is based on a rectified linear function. The idea being that the non-linearity of the Gaussian distribution distorts the evaluation metrics as the average reward can not be interpreted as mean distance. 
-\par
-Additionally a reward signal is built that includes past feedback and can be seen as moving sum or moving average of the prior described reward functions. This reward function is inspired by the work of \cite{edgarod} who set up a reward signal that //todo.
-
+The desired goal we want the agent to achieve is to stay as close as possible to the GT positions in order to generate identical paths. A reward function should consequently assign positive feedback if the agent is near the GT. Punishing the agent with negative rewards if it drifts apart from the GT is not practical because initial experiments show that the agent will just move straight out of bounds to end the episode. Any RL algorithm tries to maximize the return. If the agent continuous to explore the state space, it will repeatedly receive negative rewards which accumulate to a high negative return. However, moving straight out of bounds will result in a return of a few negative rewards which is greater than any attempt to follow the curve. Accordingly, we will use the Gaussian track-error, mentioned in the work of \cite{martinsen2018curved}, as inspiration to construct the reward function. Rewards are exclusively positive, starting at 1 if the positions are the same, and get smaller in proportion to the current distance between the agent's position and the GT's position. \cite{martinsen2018curved} use a normal distribution to determine the scalar reward based on the distance (p.~X). At the beginning of our modelling and experiment phase, we make use of a customized version of such a Gaussian bell curve as reward function as well. Besides, we come up with another reward function which is based on a rectified linear function. The idea being that the non-linearity of the Gaussian bell curve distorts the evaluation metrics as the average reward can not be interpreted as mean distance. 
 
 \begin{figure}[H]
     \centering
@@ -19,12 +16,8 @@ Additionally a reward signal is built that includes past feedback and can be see
 
 \begin{equation}
 \begin{aligned}
-    R1 := f_{R1}(d_t) &= \frac{1}{5 \sqrt{2\pi}} \mathrm{e}^{-\frac{d_t^2}{50}} \cdot 12.5333
+    R1 := f_{R1}(d_t) &= \frac{1}{\sigma \sqrt{2\pi}} \mathrm{e}^{-\frac{d_t^2}{2\sigma^2}} \cdot C \text{, where $\sigma = 5 and C \approx 12.53$}
 \\
-R2 := f_{R2}(d_t) &= max(1 - \frac{d_t}{10}, 0)
-\\
-    R3 := f_{R3}(d_t) &= \sum_{i=0}^{10}{f_{R1}(d_{t-i})}
-\\
-    R4 := f_{R4}(d_t) &= \frac{f_{R3}(d_t)}{10}
+R2 := f_{R2}(d_t) &= max(1 - \frac{d_t}{\alpha}, 0) , where \alpha = 10
     \end{aligned}
 \end{equation}
