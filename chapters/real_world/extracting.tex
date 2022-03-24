@@ -1,4 +1,4 @@
-In order to build a dataset containing real-world trajectories, we initially are in need of historical AIS data. Although, the AIS signal from every ship gets freely broadcasted and can be potentially received by anyone with a suitable receiver or antenna, we still struggled to obtain a raw dataset. Services like \textit{MarineTraffic} display live ship positions based on AIS data, but getting access to historical data involves a fee and a request which in fact got ignored in our case. Even our friendly request for free historical AIS data for academic use at a local institution, the "Maritime Safety and Security Centre" in Cuxhaven, got denied with a reference to a german law that requires every claimant to pay a fee.
+In order to build a dataset containing real-world trajectories, we initially are in need of historical AIS data. Although, the AIS signal from every ship gets freely broadcasted and can be potentially received by anyone with a suitable receiver or antenna, we still struggled to obtain a raw dataset. Services like \textit{MarineTraffic} display live ship positions based on AIS data but getting access to historical data involves a fee and a request which in fact got ignored in our case. Even our friendly request for free historical AIS data for academic use at a local institution, the "Maritime Safety and Security Centre" in Cuxhaven, got denied with a reference to a german law that requires every claimant to pay a fee.
 \par
 Fortunately, the DLR-MI has access to historical AIS data through a service called \textit{AISHub} which allows its members to exchange AIS data. Thus, our dataset consists of four months of raw AIS signals from the year 2020 (the first month of each quarter) and is further specified by:
 //TODO table dataset specification
@@ -19,7 +19,7 @@ MovingPandas allows the cleaning of outliers based on method called "Interquarti
 //TODO
 
 \paragraph{5. Split trajectories by time gaps.}
-Trajectories are constructed by MovingPandas entirely based on the MMSI. Under the hood, MovingPandas simply groups the input dataframe by the MMSI, which eventually leads to a single trajectory per unique ship. To be able to separate those single trajectories into voyages, MovingPandas offers a variety of \textit{Splitters}. The first \textit{Splitter} we will apply is the \textit{ObservationGapSplitter} which splits trajectories that have too long gaps in consecutive AIS signals. Not only will this operation extract unique voyages of ships, but also remove disrupted signals which would require long phases of interpolated values.
+Trajectories are constructed by MovingPandas entirely based on the MMSI. Under the hood, MovingPandas simply groups the input dataframe by the MMSI, which eventually leads to a single trajectory per unique ship. To be able to separate those single trajectories into voyages, MovingPandas offers a variety of \textit{Splitters}. The first \textit{Splitter} we will apply is the \textit{ObservationGapSplitter} which splits trajectories that have too long gaps in consecutive AIS signals. Not only will this operation extract unique voyages of ships, it will also remove disrupted signals which would require long phases of interpolated values.
 We chose a minimum time delta per gap of five minutes.
 
 \paragraph{6. Split trajectories by stops.}
@@ -30,8 +30,8 @@ Visualizations of the trajectories after the previous step still show ships that
 We exclusively keep trajectories that have a length of more than 300 meters.
 
 \paragraph{8. Upsample and unify time intervals.}
-Finally, all records of every trajectory get resampled to have fixed time interval of five seconds. Missing values are linearly interpolated. The idea behind this upsampling is that the time component gets incorporated directly into the dataset and does not have to be provided in the state representation. Without explicitly knowing, the agent will always take actions that lead to the next state five seconds into the future.
+Finally, all records of every trajectory get resampled to have fixed time interval of ten seconds. Missing values are linearly interpolated. The idea behind this upsampling is that the time component gets incorporated directly into the dataset and does not have to be provided in the state representation. Without explicitly knowing, the agent will always take actions that lead to the next state ten seconds into the future.
 \par
 
 
-The final dataset consists of 28,000 trajectories with a subset being shown in Fig. \ref{fig:tracks}.
+The final dataset consists of 28,000 trajectories with a subset being shown in Fig. %\ref{fig:tracks}.

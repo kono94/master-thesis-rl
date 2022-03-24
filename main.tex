@@ -11,11 +11,11 @@
 \usepackage[bottom=3cm, right=2.5cm, left=2.5cm]{geometry}
 \usepackage{float}
 \usepackage{wrapfig}
+\usepackage{caption}
 \usepackage{subcaption}
 \usepackage[onehalfspacing]{setspace}
 \usepackage{url}
 \usepackage{tabularx}
-\usepackage{caption}
 \usepackage{eurosym}
 \usepackage{svg}
 \usepackage{pdfpages}
@@ -63,7 +63,8 @@
 \setlength{\parindent}{0em}
 \setlength{\parskip}{2mm}
 \pagestyle{scrheadings}%  S
-\clearscrheadfoot% 
+%\clearscrheadfoot% 
+\clearpairofpagestyles
 \automark{section}% 
 \setheadwidth{text}%
 \ihead{\textbf{\pagemark}}
@@ -86,8 +87,9 @@
 \newpage
 
 % Abbildungsverzeichnis
-%\listoffigures
-%\newpage
+\listoffigures
+\listoftables
+\newpage
 \noindent
 
 \input{structure}

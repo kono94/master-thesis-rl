@@ -1,19 +1,20 @@
 \section{Introduction}
-\input{chapters/introduction/intro}
-    \subsection{Objective}
+\input{chapters/introduction/intro} \label{chap:intro}
+    \subsection{Objective and Requirements}
     \input{chapters/introduction/objective}
     \subsection{Motivation}
+    \input{chapters/introduction/motivation}
     \subsection{Structure}
+    \input{chapters/introduction/structure}
     
 \newpage
 \section{Prerequisites}
     \subsection{RL Framework}\label{chap:rlframework}
     \input{chapters/prerequisites/rl_framework}
-    \subsection{Recent Developments and Achievements}
-    \input{chapters/prerequisites/history}
     \subsection{Automatic Identification System}
     \input{chapters/prerequisites/ais}
-    
+    \subsection{Recent Developments and Achievements}
+    \input{chapters/prerequisites/history}
 \newpage
 \section{Related Work}\label{chap:relatedWork}
 \input{chapters/related work}
@@ -23,11 +24,11 @@
 \input{chapters/ddpg/intro}
     \subsection{Actor-Critic Architecture}
     \input{chapters/ddpg/actor_critic}
-    \subsection{Replay Buffer}
+    \subsection{Replay Buffer}\label{subchap:buffer}
     \input{chapters/ddpg/replay}
     \subsection{Exploration Noise}
     \input{chapters/ddpg/noise}
-    \subsection{Hyper Parameters}
+    \subsection{Hyper Parameters}\label{subchap:hyperparameters}
     \input{chapters/ddpg/hyperparameters}
     \subsection{Pseudo Code} \label{subchap:pseudo}
     \input{chapters/ddpg/pseudo_code}
@@ -35,13 +36,13 @@
 \newpage
 \section{Imitation Learning}
     \input{chapters/imitation/intro}
-        \subsection{Weaknesses of Interactive RL}
-        \input{chapters/imitation/weakness} \label{subchap:weak}
-        \subsection{Nature as Blueprint}
+        \subsection{Weaknesses of Interactive RL} \label{subchap:weak}
+        \input{chapters/imitation/weakness} 
+        \subsection{Nature as Blueprint}\label{subchap:nature}
         \input{chapters/imitation/nature}
         \subsection{Behavioral Cloning}
         \input{chapters/imitation/behavior_cloning}
-        \subsection{Inverse RL}
+        \subsection{Inverse RL}\label{subchap:inverse}
         \input{chapters/imitation/inverse_rl}
 \newpage
 \section{Preparatory Experiments} \label{chap:synthetic}
@@ -52,11 +53,16 @@
         \input{chapters/synthetic/paths}
         \subsubsection{Variants}
         \input{chapters/synthetic/variants}
-        \subsubsection{Reward Function}
+        \subsubsection{Reward Function}\label{subchap:reward}
         \input{chapters/synthetic/reward_function}
         
+    \subsection{Performance Metric}
+    \input{chapters/synthetic/metric}
     \subsection{Applying DDPG}
-    \subsection{Applying Imitation Learning}
+    \input{chapters/synthetic/apply_ddpg}
+    \newpage
+    \subsection{Applying Imitation Learning} \label{subchap:applyBC}
+    \input{chapters/synthetic/apply_bc}
     \subsection{Libraries}
     \input{chapters/synthetic/libraries}
     
@@ -67,8 +73,6 @@
     \input{chapters/real_world/extracting}
     \subsection{The AIS-Environment}
     \input{chapters/real_world/ais_env}
-    \subsection{Performance Metric}
-    \input{chapters/real_world/metric}
     \subsection{Results}
     \subsection{Tracing Failure}
     \input{chapters/real_world/failure}

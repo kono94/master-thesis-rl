@@ -1,5 +1,5 @@
 The pseudo code is cited from the DDPG paper proposed by \cite{lillicrap2019continuous} with the minor adjustment of adopting the definition of the timestep the next reward is given back to the agent to be $t+1$ as described in subchapter \ref{chap:rlframework} (p.~5):
-\begin{algorithm}
+\begin{algorithm}[H]
     \caption{DDPG Algorithm}
     \begin{algorithmic}[1]
         \State Randomly initialize critic network $Q(s,a \mid \theta^Q)$ and actor $\mu(s \mid \theta^\mu)$ with weights $\theta^Q$ and $\theta^\mu$.
