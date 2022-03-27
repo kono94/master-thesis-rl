@@ -27,11 +27,16 @@ Visualizations of the trajectories after the previous step still show ships that
 
 
 \paragraph{7. Remove short trajectories.}
-We exclusively keep trajectories that have a length of more than 300 meters.
+We solely keep trajectories that have a length of more than 1500 meters to  exclude ships that move "inside" the port until reaching the floodgates and to create a dataset consisting predominantly of trajectories documenting the way large ships leave or approach the port from the North Sea.
 
 \paragraph{8. Upsample and unify time intervals.}
 Finally, all records of every trajectory get resampled to have fixed time interval of ten seconds. Missing values are linearly interpolated. The idea behind this upsampling is that the time component gets incorporated directly into the dataset and does not have to be provided in the state representation. Without explicitly knowing, the agent will always take actions that lead to the next state ten seconds into the future.
 \par
 
-
+\begin{figure}[H]
+    \centering
+    \includesvg[width=\textwidth]{images/shipTypes.svg}
+    \caption{The 15 most encountered ship types in the dataset}
+    \label{fig:shipTypes}
+\end{figure}
 The final dataset consists of 28,000 trajectories with a subset being shown in Fig. %\ref{fig:tracks}.
