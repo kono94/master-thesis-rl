@@ -1,0 +1,31 @@
+The previous chapter described how to build a dataset which contains a collection of trajectories without taking into account different ship types. As the original AIS records from AISHub do not include the static information of vessels, we had to crawl the openly accessible ship database from \textit{myshiptracking.com}, fusing the MMSIs with their corresponding ship type as defined by the website. By analysing the "all ships"-dataset and looking at the most encountered ship types in Fig. \ref{fig:shipTypes}, we notice a huge variety of different vessel models, ranging from big container ships and tankers to tugs, sailing- or fishing ships.
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.95\textwidth]{images/shipTypes.svg}
+    \caption{The 15 most encountered ship types in the dataset}
+    \label{fig:shipTypes}
+\end{figure}
+
+As already mentioned in subchapter \ref{subchap:curveEnv}, \cite{venskus2021unsupervised} construct separate computational models depending on the deviating ship types as they found out that individual vessel types generate different traffic pattern (p.~729). We adhere to this idea and will assemble multiple datasets depending on the different ship categories. Here, we do not split by distinct types but rather a group of types, i.e. "big ships" (cargo- and passenger ships, dredgers and tankers), "cargo" (ships that are meant for transportation excluding tankers) and "tankers" (ships that carry oil, chemicals or any other fluid or gas). The relationship and amount of unique ships (MMSIs) and extracted trajectories for each of those constructed datasets are shown in upcoming Fig. \ref{fig:datasets}. A detailed list of ship types for every category can be discovered in the appendix in section \ref{appendix:datasets}.
+\begin{figure}[H]
+    \centering
+    \hspace*{1cm}%
+    \begin{tikzpicture}[node distance=3cm]
+    
+\tikzstyle{box} = [rectangle, rounded corners, minimum width=4cm, minimum height=1cm,draw=black, text centered, align=center]
+\tikzstyle{arrow} = [thick,->,>=stealth]
+
+\node (all) [box] {$\begin{gathered} \textbf{All Ships} \\ \text{MMSIs: 1522} \\ \text{Count: 25019} \end{gathered}$};
+\node (big) [box, below of=all] {$\begin{gathered} \textbf{Big Ships} \\ \text{MMSIs: 1077} \\ \text{Count: 11578} \end{gathered}$};
+\node (cargo) [box, below left of=big, yshift=-0.5cm, xshift=-1cm] {$\begin{gathered} \textbf{Cargo} \\ \text{MMSIs: 967} \\ \text{Count: 3956} \end{gathered}$};
+\node (tanker) [box, below right of=big, yshift=-0.5cm, xshift=1cm] {$\begin{gathered} \textbf{Tanker} \\ \text{MMSIs: 71} \\ \text{Count: 1194} \end{gathered}$};
+
+
+\draw [arrow] (all) -- (big);
+\draw [arrow] (big) -- (cargo);
+\draw [arrow] (big) -- (tanker);
+
+\end{tikzpicture}
+    \caption{Different trajectory datasets}
+    \label{fig:datasets}
+\end{figure}

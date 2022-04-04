@@ -1,5 +1,5 @@
 In a reinforcement learning setup an agent is interacting with an environment $E$ at discrete timesteps. At every timestep $t$ the agent observes the current state of the environment $s_t$ and selects an action $a_t$. Feedback is returned by the environment in the form of a scalar reward $r_{t+1}$ and the resulting state $s_{t+1}$ based on the intern dynamics of the environment. We will use the definitions of \cite{Sutton1998} throughout this chapter especially the definition of the point in time the reward is given back. In contrast to other publications like those from \cite{zare2021continuous}, \cite{wiering2012reinforcement} and \cite{lillicrap2019continuous}, \cite{Sutton1998} do not bind the reward signal to the same timestep as current state-action pair ($s_t$, $a_t$) but rather the next one to indicate that the reward and the next state are calculated at the same time $t+1$.
-This interaction can thus be illustrated in the following way:
+This interaction can thus be illustrated in the following way, where uppercase symbols e.g. $A$, $S$ or $R$ are used to indicate non-discrete instances of states, actions or rewards:
 \begin{figure}[H]
     \centering
     \hspace*{1cm}%
@@ -58,5 +58,6 @@ The overall objective of an reinforcement learning agent is therefore to find an
     Q^\pi(s_t, a_t) = \EX_\pi[r(s_t, a_t) + \gamma Q^\pi(s_{t+1}, \pi(a_{t+1})]
 \end{equation}
 
-
-//TODMOB Tabular relationship
+Unfortunately, it is impossible to solve this equation if the model of the environment is unknown. But even if a perfect model is present, methods like \textit{Dynamic Programming} have limited utility in due to their great computational expense \cite[p.~73]{Sutton1998}. Therefore, reinforcement learning algorithms are an iterative approach that interacts with the environment, samples feedback and consecutively updates estimates of the actual returns. The close those estimates are to the real values, the better the derived policy because the greediest policy will just select action with the highest $Q$-value for every state.
+\par
+As the name suggests, tabular methods keep all state-action pairs and their corresponding $Q$-value in big tables, updating them if needed. In contrast, deep reinforcement learning techniques utilize powerful function approximators like neuronal networks for the purpose of replacing the memory-limited tables and handling huge state and action spaces.

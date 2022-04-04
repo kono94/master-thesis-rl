@@ -1,0 +1,28 @@
+Recalling from chapter \ref{chap:synthetic} and the structure of the synthetic environment, the AIS environment differs from the simplified version by the underlying ground-truth data not being generate by arbitrary functions but from present instances of AIS records. The current state is defined by the signal recorded at $t$ while the the desired action values are part of the next record at $t+1$. We will not add any additional features, resulting in a state representation that is semantically identical to $S3$ as defined in Eq. \ref{stateRepresentation}.
+\par
+For the final state representation we defined two different variants. One instance will utilize the raw values of course over ground (COG) and speed over ground (SOG) whereas the second representation includes the artificial values for direction and speed calculated by solely considering consecutive locations of the ship. The assumption behind this calculation is that the original values might not be accurate enough to train on in order to compute a precise trajectory for the agent. Having a unified way to extract direction and speed from sequences of AIS locations as well as the reverse computation for the purpose of determining the next position should be a more feasible and authentic approach. The final state representations and possible action values are thus defined by \ref{eq:realStateRepresentation}. To make it clear that the action values are different from features of the state space, we use the distinct terminology of "course" and "tempo".
+\begin{equation}
+\begin{aligned}
+    S1 := S_t &= \{lon_t, lat_t, COG_t, SOG_t\}
+\\
+    S2 := S_t &= \{lon_t,lat_t, direction_t, speed_t\}
+\\
+    A1 := A_t &= \{course_t, tempo_t\}
+    \end{aligned}
+\end{equation} \label{eq:realStateRepresentation}
+
+Although the focus on imitation learning makes the crafting of a reward function obsolete, we still add a simple adoption from $R3$ (see \ref{eq:rewardFunctions}) to the AIS environment for the purpose of quickly performing test runs with DDPG. Here, the maximum distance in meters to receive a non-zero reward is arbitrary set to $\alpha=8000$.
+\par
+In general, the environment loads in the desired dataset ("cargo", "tanker" etc.) and converts it to a list of trajectories. The lists gets shuffled initially and after every trajectory was presented to the agent in form of a episodes. For every timestamp $t$ the environment calculates the next position of the agent by incorporating the proposed course and tempo of the given action. Additionally the next GT position is set by the next entry of the trajectory and the reward gets calculated based on the distance between the agent and the GT position. All operations regarding the calculations of next positions as well as the distance between two points on the globe is done with the library \textit{geopy} and its corresponding components \textit{distance} and \textit{destination}.
+\par
+Besides, we come up with an extended action space which additionally specifies the direction and speed of the agent when arriving at the calculated location. This is due to the fact that values for COG, SOG, direction and speed as given by the AIS message or the artificially extraction by MovingPandas have their semantic meaning just for the snapshot of the current state. The course and tempo that the agent proposes in order to get to the next position are distinct from the next direction and speed values that are present on exactly this new position. To compensate for the difference between the course taken and the final direction at the next position, we also force the agent to manually set the next direction and speed as it learns those values from the ground-truth data. Formally, we defined these possible actions in Eq.  \ref{eq:extendedAction}. Here, the optimal values for $next\_direction_t$ and $next\_speed_t$ are identical to $COG_{t+1}$ and $SOG_{t+1}$ of the state space (respectively $direction_{t+1}$ and $speed_{t+1}$).
+\begin{equation}
+\begin{aligned}
+    A2 := A_t &= \{course_t, tempo_t, next\_direction_t, next\_speed_t\}
+    \end{aligned}
+\end{equation} \label{eq:extendedAction}
+
+To further illustrate the idea of the extension to the action space or the apprehension that the previous definition of $A1$ in Eq. \ref{eq:realStateRepresentation} might be misleading, we have a look at Fig. \ref{fig:explanation}.
+//TODO tikz graphic
+
+The graphic shows that in order to reach point B from point A, the agent has to submit suitable action parameters in course and speed. If the agent chooses the correct values, it will end up exactly at point B but its values for direction and speed for the deriving next state not match the values defined by the GT dataset and the AIS signals because the computation of the next location is purely based on straight lines. When construction a state space exclusively of longitude and latitude, this would not be an obstacle. However, in our case the agent is unable to fully reach the next state (position, direction and speed) even when proposing the optimal action, hence the need for supplementary action values.

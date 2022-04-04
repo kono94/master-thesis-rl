@@ -11,6 +11,8 @@
 \usepackage[bottom=3cm, right=2.5cm, left=2.5cm]{geometry}
 \usepackage{float}
 \usepackage{wrapfig}
+\usepackage{pdfpages}
+\usepackage{gensymb}
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage[onehalfspacing]{setspace}
@@ -29,7 +31,7 @@
 \usepackage{eurosym}
 \usepackage{amsmath}
 \usepackage{tikz}
-\usetikzlibrary{calc} 
+\usetikzlibrary{calc, shapes.geometric, arrows, shapes.multipart} 
 \usepackage{algorithm}
 \usepackage{algorithmicx}
 \usepackage{eucal}% Special characters
@@ -81,7 +83,12 @@
 \begin{document}
 
 \input{titlepage}
-
+\section*{Abstract}
+\input{chapters/abstract}
+\newpage
+\section*{Acknowledgements}
+\input{chapters/acknowledgement}
+\newpage
 % Inhaltsverzeichnis
 \tableofcontents
 \newpage
@@ -99,6 +106,12 @@
 \bibliography{sources}
 \newpage
 
-%\appendix
-%\section{Anhang}
+\appendix
+\section{DDPG Curve Results} \label{appendix:curveResults}
+\input{appendix/curve_results}
+\section{Trajectory Dataset Specifications}\label{appendix:datasets}
+\input{appendix/datasetSepcs}
+\section{MARESEC Abstract Proposal}\label{appendix:maresec}
+\input{appendix/maresec_proposal}
+
 \end{document}
