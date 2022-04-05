@@ -1,4 +1,98 @@
-Table (appendix) all single experiments
+The previous chapter revealed that the proposed system of the designed environment and the usage of behavioral cloning did not produces feasible predictions. In this chapter, we will investigate our setting if the task is the reproduction of a single ship trajectory and the influence if a second trajectory gets added. Here, the agent is not confronted with the task of generalization in the sense that there is no test set and consequently no states that it did not encounter before. The conducted experiment are meant to confirm the correctness of the implementation (e.g. transition dynamics, bugs etc.), the ability of behavioral cloning of handling real world trajectories in contrast to the synthetic functions of chapter \ref{chap:synthetic} and especially the impact of different network architectures.
+\par
+First of all it should be noted that there can potentially be a huge difference in the calculated performance and the empirically performance based on the form of the tracks as displayed in the upcoming graphics. Our performance metric is derived from the eucledian distances whereas the empirically performance of final snapshot is best calculated by the dynamic time warping distance (DTW). One example being the case if the agent perfectly generates the form of the path but constantly lacks behind the ground-truth position due to a smaller value in speed. The overall performance would be bad but the resulting graphics of the proposed tracks would look exceptional accurate.
+\par
+The upcoming graphics display the prediction of the agent in red and the ground-truth in black. Being sampled from the "tanker"-dataset, this single trajectory contains 111 steps and thus spans a time horizon of approximately 18 minutes in the real world. Expert demonstrations only include this trajectory while the intern policy network of behavioral cloning is trained for $50$ epochs, a learning rate of $\alpha = 1e^{-6}$ and a batch size of $4$. The focus of the different runs is on the network architectures which are specified underneath every graphic of Fig. \ref{fig:singleTrack}. Mean distances are mentioned in the subcaptions as well defined by $M$ and the x and y axes represent longitude respectively latitude.
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+       \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=127_SINGLE__batch=4_net=[4, 4]_steps=50_lr=1e-06.svg}
+         \caption{$M=127; 4-4$}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=225_SINGLE__batch=4_net=[256, 128, 64]_steps=50_lr=1e-06.svg}
+         \caption{$M=225; 256-128-64$}
+     \end{subfigure}
+          \hfill
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=282_SINGLE__batch=4_net=[16]_steps=50_lr=1e-06.svg}
+         \caption{$M=282; 16$}
+     \end{subfigure}
+          \hfill
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=2081_SINGLE__batch=4_net=[100]_steps=50_lr=1e-06.svg}
+         \caption{$M=2081; 100$}
+     \end{subfigure}
+               \hfill
+         \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=1250_SINGLE__batch=4_net=[256, 128]_steps=50_lr=1e-06.svg}
+         \caption{$M=1250; 256-128$}
+     \end{subfigure}
+          \hfill
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=7182_SINGLE__batch=4_net=[512, 10]_steps=50_lr=0.0001.svg}
+         \caption{$M=7182; 512-10$}
+     \end{subfigure}
+     \caption{Test}
+     \label{fig:singleTrack}
+\end{figure}
 
 
-difference from performace in form and following eucledian distance..... not DTW
+
+
+
+\begin{figure}[H]
+     \centering
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+       \includesvg[width=\textwidth]{images/ais/double_line/b8_n1024_512_256_steps500_lr06_mean_distance_1430.svg}
+         \caption{$M=1430$; 1024-512-256}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/double_line/b8_n1024_512_256_steps500_lr06_mean_distance=3453.svg}
+         \caption{$M=3453$; 1024-512-256}
+     \end{subfigure}
+          \hfill
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/double_line/b4_net_256_128_64_steps300_lr06_mean_distance=5779.svg}
+         \caption{$M=5779$; 256-128-64}
+     \end{subfigure}
+          \hfill
+               \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/double_line/b4_n256_128_64_steps300_lr06_mean_distance=550.svg}
+         \caption{$M=550; 256-128-64$}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/double_line/b8_n8_16_32_16_8_steps50_lr06_mean_distance=365.svg}
+         \caption{$M=365$; 8-16-32-16-8}
+     \end{subfigure}
+               \hfill
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+             \includesvg[width=\textwidth]{images/ais/double_line/b8_n8_16_32_16, 8_steps50_lr06_mean_distance=398.svg}
+         \caption{$M=398$; 8-16-32-16-8}
+     \end{subfigure}
+     \caption{DDDD}
+\end{figure}
+
+
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.7\textwidth]{images/ais/bar_plots/big_ships_speed_10secs_scaled_NEW_APPROACH_8,16,32,16,8-steps7.svg}
+    \caption{Caption}
+    \label{fig:my_label}
+\end{figure}

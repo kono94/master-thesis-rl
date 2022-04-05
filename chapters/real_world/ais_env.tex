@@ -22,7 +22,7 @@ Besides, we come up with an extended action space which additionally specifies t
     \end{aligned}
 \end{equation} \label{eq:extendedAction}
 
-To further illustrate the idea of the extension to the action space or the apprehension that the previous definition of $A1$ in Eq. \ref{eq:realStateRepresentation} might be misleading, we have a look at Fig. \ref{fig:explanation}.
+Fig. \ref{fig:explanation} illustrates the idea of the extension to the action space and the apprehension that the previous definition of $A1$ in Eq. \ref{eq:realStateRepresentation} might be ineligible. 
 //TODO tikz graphic
 
 The graphic shows that in order to reach point B from point A, the agent has to submit suitable action parameters in course and speed. If the agent chooses the correct values, it will end up exactly at point B but its values for direction and speed for the deriving next state not match the values defined by the GT dataset and the AIS signals because the computation of the next location is purely based on straight lines. When construction a state space exclusively of longitude and latitude, this would not be an obstacle. However, in our case the agent is unable to fully reach the next state (position, direction and speed) even when proposing the optimal action, hence the need for supplementary action values.
