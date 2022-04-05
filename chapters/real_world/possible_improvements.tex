@@ -1,4 +1,9 @@
-Standardscaler?
-richer feature space?
-
-addition of termination? distance to goal and direction? 
+Due to time constrains, it is not possible test every single hypothesis and assumption. However, we will share our experience, uncertainties and ideas in this subchapter to make them visible for scientist dealing with the same kind of topic.
+\par
+First we would like to focus on the specific values of state and action space. The input features consist of values derived from the AIS signal e.g. latitude and longitude. One problem with those values is that just small changes in the fractional digits result in big changes to the true position. Even though, we scaled the values for latitude and longitude to 0-1, the observation space might be too big ($25km /times 14.5km$) and thus causing inaccurate predictions purely based on fractional digits. One suggesting is that multiple models should be trained that are responsible for much smaller areas, leading to bigger differences in decimal places of the input features. Also the use of a "Standardscaler" could be beneficial which causes the individual features to have a mean of 0 and a standard deviation of 1.
+\par
+Another assumption is that the features space does not cover up all potential influences to the controls taken by the captain. If we rightfully assume that the current heavily influences the motion patterns and controls of ships than excluding this information from the feature space makes it impossible for the agent to learn an optimal policy. The underlying causality is missing. A possible next step is the extension of the state space with features like wind condition and tide information.
+\par
+Although the desired destination of a ship has to be defined manually and therefore was not included in the state space, it should be up to test if adding multiple features in regards to the distance or direction to the goal causes any improvements or makes classical interactive reinforcement learning practical as well. In theory, the destination can also be added artificially by simply extracting the last location of every trajectory.
+\par
+Last but not least, the usage of different network models e.g. transformers or generative adversarial networks could be tested as well. The vanilla approach of behavioral cloning simply makes use of a fully connected network.

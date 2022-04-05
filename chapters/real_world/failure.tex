@@ -1,6 +1,6 @@
 The previous chapter revealed that the proposed system of the designed environment and the usage of behavioral cloning did not produces feasible predictions. In this chapter, we will investigate our setting if the task is the reproduction of a single ship trajectory and the influence if a second trajectory gets added. Here, the agent is not confronted with the task of generalization in the sense that there is no test set and consequently no states that it did not encounter before. The conducted experiment are meant to confirm the correctness of the implementation (e.g. transition dynamics, bugs etc.), the ability of behavioral cloning of handling real world trajectories in contrast to the synthetic functions of chapter \ref{chap:synthetic} and especially the impact of different network architectures.
 \par
-First of all it should be noted that there can potentially be a huge difference in the calculated performance and the empirically performance based on the form of the tracks as displayed in the upcoming graphics. Our performance metric is derived from the eucledian distances whereas the empirically performance of final snapshot is best calculated by the dynamic time warping distance (DTW). One example being the case if the agent perfectly generates the form of the path but constantly lacks behind the ground-truth position due to a smaller value in speed. The overall performance would be bad but the resulting graphics of the proposed tracks would look exceptional accurate.
+First of all it should be noted that there can potentially be a huge difference in the calculated performance and the empirically performance based on the form of the tracks as displayed in the upcoming graphics. Our performance metric is derived from the eucledian distances whereas the empirically performance of the final snapshot is best calculated by the dynamic time warping distance (DTW). One example being the instance where the agent perfectly generates the form of the path but constantly lacks behind the ground-truth position due to a lower value in speed. The overall performance would be bad but the resulting graphics of the proposed tracks would look exceptional accurate.
 \par
 The upcoming graphics display the prediction of the agent in red and the ground-truth in black. Being sampled from the "tanker"-dataset, this single trajectory contains 111 steps and thus spans a time horizon of approximately 18 minutes in the real world. Expert demonstrations only include this trajectory while the intern policy network of behavioral cloning is trained for $50$ epochs, a learning rate of $\alpha = 1e^{-6}$ and a batch size of $4$. The focus of the different runs is on the network architectures which are specified underneath every graphic of Fig. \ref{fig:singleTrack}. Mean distances are mentioned in the subcaptions as well defined by $M$ and the x and y axes represent longitude respectively latitude.
 \begin{figure}[H]
@@ -8,91 +8,114 @@ The upcoming graphics display the prediction of the agent in red and the ground-
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
        \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=127_SINGLE__batch=4_net=[4, 4]_steps=50_lr=1e-06.svg}
-         \caption{$M=127; 4-4$}
+         \caption{$M=127 \quad 4-4$}
+         \label{fig:single1}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
              \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=225_SINGLE__batch=4_net=[256, 128, 64]_steps=50_lr=1e-06.svg}
-         \caption{$M=225; 256-128-64$}
+         \caption{$M=225 \quad 256-128-64$}
+         \label{fig:single2}
      \end{subfigure}
-          \hfill
+\end{figure}
+\begin{figure}[H]\ContinuedFloat
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
              \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=282_SINGLE__batch=4_net=[16]_steps=50_lr=1e-06.svg}
-         \caption{$M=282; 16$}
+         \caption{$M=282 \quad 16$}
+         \label{fig:single3}
      \end{subfigure}
           \hfill
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
              \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=2081_SINGLE__batch=4_net=[100]_steps=50_lr=1e-06.svg}
-         \caption{$M=2081; 100$}
+         \caption{$M=2081 \quad 100$}
      \end{subfigure}
-               \hfill
+\end{figure}
+\begin{figure}[H]\ContinuedFloat
          \begin{subfigure}[b]{0.48\textwidth}
          \centering
              \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=1250_SINGLE__batch=4_net=[256, 128]_steps=50_lr=1e-06.svg}
-         \caption{$M=1250; 256-128$}
+         \caption{$M=1250 \quad 256-128$}
+         \label{fig:single5}
      \end{subfigure}
           \hfill
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
              \includesvg[width=\textwidth]{images/ais/single_line/mean_distance=7182_SINGLE__batch=4_net=[512, 10]_steps=50_lr=0.0001.svg}
-         \caption{$M=7182; 512-10$}
+         \caption{$M=7182 \quad 512-10$}
      \end{subfigure}
      \caption{Test}
      \label{fig:singleTrack}
 \end{figure}
 
-
-
-
-
+The first important discovery is that the implementation in terms of e.g. transition dynamics is correct since the proposed trajectories of the agent in Figs. \ref{fig:single1} and \ref{single2} are almost completely overlapping the ground-truth. In this context, the policy network memorized the mapping from states to actions as given by the expert demonstrations. The intern calculation of the next geographic location of the agent in the environment does indeed seems to be an accurate inverse function to the artificial direction and speed values calculated during the creating of the dataset.
+\par
+Secondly, the network architecture that yielded the best results in the synthetic experiments of chapter \ref{chap:synthetic} and was also used for the first approach to the AIS datasets ($n_h^1=256, n_h^2=128, n_h^3=64$), performs exceptional well when confronted with the single trajectory (Fig. \ref{single2}). Though, the best result of $M=127$ is set by a minimal network of $n_h^1=4$ and $n_h^2=4$, matching the number of input and output features.
+\par
+The importance of the proportion between the first and second hidden layer can be seen in the remaining subfigures. Removing just the third layer of the successful network of \ref{fig:single2} ends up with a drastic decline in performance to $M=1250$ (see \ref{fig:single5}. In general, the higher the amount of neurons in the first layer and the reduction in number of the second layer, the worse is the performance. Additionally, increasing the complexity of the network in terms of adding a fourth layer or upping the number of neurons does not necessarily yield better performance. This does seem surprising because we made the assumption that a complex network would simply overfit but this is not the case. A complete list of all conducted experiments to the single trajectory reproduction can be found in the Appendix \ref{appendix:}.
+\par
+After carrying out the experiments involving a single trajectory and the finding that it is certainly possible to generate a real world vessel path, we take it further by adding a second trajectory to the expert demonstrations. Works from \cite{edgardo} or \cite{X} concentrate on family of curves or ship paths that all move in the same direction. However, one requirement for our system is the extension to arbitrary moving ships without the restriction of predefined movement patterns. In this regard, a hypothesis is that a single network and policy is not capable of handling this flexibility and the opposing ship lanes and maneuvers.
+\par
+The following Fig. \ref{fig:double} shows a subset of the series of experiments ran with a learning rates of $\alpha=1e^{-6}$, increased training times ($50$ to $500$ epochs) and a batch size of $4$ and $8$. Every row of subfigures can be seen as one experiment where the two trajectories are split up. The left trajectory (A) starts from the middle and moves south east whereas the right trajectory (B) is the same one as used in the previous experiments, starting near the center and moving north west.
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
-       \includesvg[width=\textwidth]{images/ais/double_line/b8_n1024_512_256_steps500_lr06_mean_distance_1430.svg}
-         \caption{$M=1430$; 1024-512-256}
-     \end{subfigure}
-     \hfill
-     \begin{subfigure}[b]{0.48\textwidth}
-         \centering
-             \includesvg[width=\textwidth]{images/ais/double_line/b8_n1024_512_256_steps500_lr06_mean_distance=3453.svg}
-         \caption{$M=3453$; 1024-512-256}
-     \end{subfigure}
-          \hfill
-     \begin{subfigure}[b]{0.48\textwidth}
-         \centering
              \includesvg[width=\textwidth]{images/ais/double_line/b4_net_256_128_64_steps300_lr06_mean_distance=5779.svg}
-         \caption{$M=5779$; 256-128-64}
+         \caption{$M=5779  \quad 256-128-64$}
+         \label{fig:double3}
      \end{subfigure}
           \hfill
                \begin{subfigure}[b]{0.48\textwidth}
          \centering
              \includesvg[width=\textwidth]{images/ais/double_line/b4_n256_128_64_steps300_lr06_mean_distance=550.svg}
-         \caption{$M=550; 256-128-64$}
+         \caption{$M=550 \quad 256-128-64$}
+         \label{fig:double4}
+     \end{subfigure}
+\end{figure}
+\begin{figure}[H]\ContinuedFloat
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
+       \includesvg[width=\textwidth]{images/ais/double_line/b8_n1024_512_256_steps500_lr06_mean_distance_1430.svg}
+         \caption{$M=1430  \quad 1024-512-256$}
+         \label{fig:double1}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
+             \includesvg[width=\textwidth]{images/ais/double_line/b8_n1024_512_256_steps500_lr06_mean_distance=3453.svg}
+         \caption{$M=3453  \quad 1024-512-256 $}
+         \label{fig:double2}
+     \end{subfigure}
+\end{figure}
+\begin{figure}[H]\ContinuedFloat
+     \begin{subfigure}[b]{0.48\textwidth}
+         \centering
              \includesvg[width=\textwidth]{images/ais/double_line/b8_n8_16_32_16_8_steps50_lr06_mean_distance=365.svg}
-         \caption{$M=365$; 8-16-32-16-8}
+         \caption{$M=365 \quad 8-16-32-16-8$}
+         \label{fig:double5}
      \end{subfigure}
                \hfill
      \begin{subfigure}[b]{0.48\textwidth}
          \centering
              \includesvg[width=\textwidth]{images/ais/double_line/b8_n8_16_32_16, 8_steps50_lr06_mean_distance=398.svg}
-         \caption{$M=398$; 8-16-32-16-8}
+         \caption{$M=398 \quad 8-16-32-16-8$}
+         \label{fig:double6}
      \end{subfigure}
+     \label{fig:double}
      \caption{DDDD}
 \end{figure}
 
-
-
+The first row, including Fig. \ref{fig:double3} and \ref{fig:double4}, displays the behavior of the prominent network $n_h^1=256, n_h^2=128, n_h^3=64$ which successfully learned to reproduce the synthetic curves and the single ship trajectory. Fig. \ref{fig:double4} shows that it is still capable of generating the trajectory of the previous experiment but fails in case of the second presented trajectory with an average distance of $5779$ meters. Looking closer, we notice that the agent starts by following the path in the south east direction when it abruptly decides to turn around. This turn is initiated almost at the exact location where trajectory B starts. We conclude that the network overfits to trajectory B and the input features are not evaluated granularly enough, so that moving close to states of trajectory B while generating trajectory A forces the agent to start imitating trajectory B.
+\par
+In the second row, we see similar behavior but with the opposing track being overfit. While the agent in Fig. \ref{fig:double1} learns the form of the path but moves initially moves to fast, it fails miserably to the task of generating trajectory B. The overall increase of neurons by the factor of $4$ does not show any significant improvement. However, a deviating network architecture of five layers and a structure of $n_h^1=8, n_h^2=16, n_h^3=32, n_h^4=16, n_h^5=8$ does show that single neuronal network is able to map two distinct trajectories as display in Fig. \ref{fig:double5} and \ref{fig:double6}. Supplementary experiments with for this kind of structure again show worsening performance as the number of neurons are increasing. Nethertheless, even the best performing setup has an average distance of 381 meters which is still unpractical for a system that tries to prevent collisions. In addition, this network architecture shows worse results than the initial round of experiments of subchapter \ref{subchap:results} for the "big ships"-dataset. The average euclidean distance throughout all trajectories is $2593 \pm 3027$ and a median values of $1071$ (compared to $2136 \pm 2862$ and a median of $707$). Fig. \ref{fig:finalBarPlot} demonstrates that a big chunk of previously good prediction ($<500 meters$) in Fig. \ref{fig:plotBig} moved into the next bucket of mediocre prediction of $500$ to $1000$ meters. 
 \begin{figure}[H]
     \centering
     \includesvg[width=0.7\textwidth]{images/ais/bar_plots/big_ships_speed_10secs_scaled_NEW_APPROACH_8,16,32,16,8-steps7.svg}
     \caption{Caption}
-    \label{fig:my_label}
+    \label{fig:finalBarPlot}
 \end{figure}
+
+Generally speaking, the overall approach is too fragile. Changing the network architecture just slightly can cause catastrophic failure. The task of overfitting to a problem seems counterintuitive but the main idea behind those kind of experiments is that if a network is unable to overfit to the data than it will certainly fail to generalize it well. All conducted experiments and setups described in the last two subchapters and listed in the appendix lead to the conclusion that the building of a concrete system that is capable of learning representative vessel trajectories is unsuccessful. Still, we will provide possible improvements to the systems and describe pitfalls in the next subchapter that future investigation should account for.
