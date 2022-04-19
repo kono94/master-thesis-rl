@@ -7,33 +7,32 @@ The previous chapter described how to build a dataset which contains a collectio
     \label{fig:shipTypes}
 \end{figure}
 
-As already mentioned in subchapter \ref{subchap:curveEnv}, \cite{venskus2021unsupervised} construct separate computational models depending on the deviating ship types, as they found out that individual vessel types generate different traffic patterns (p.~729). We adhere to this idea and will assemble multiple datasets depending on different ship categories.
+As already mentioned in subchapter \ref{subchap:curveEnv}, \cite{venskus2021unsupervised} construct separate computational models depending on the deviating ship types, as they found out that individual vessel types generate different traffic patterns (p.~729). We adhere to this idea and will assemble multiple datasets depending on different ship categories.Here, we do not split by distinct types, but rather a group of types. 
 \begin{wrapfigure}{l}{0.5\textwidth}
     \includegraphics[width=0.48\textwidth]{images/ais/tracks/Sailing.png}
     \caption{Voyages of sailing ships.}
     \label{fig:sailing}
 \end{wrapfigure}
-Here, we do not split by distinct types, but rather a group of types. The first deviation from the dataset which we call "big ships" focuses on a big variety of different ship models including e.g., cargo- and passenger ships, dredgers, and tanker.
+The first deviation from the dataset which we call "big ships" focuses on a big variety of different ship models including e.g., cargo- and passenger ships, dredgers, and tankers.
 In contrast to the original dataset, ship types that are very dissimilar in terms of propulsion or tend to conduct rapid turning maneuvers get filtered out. Examples for those kinds of ship types are sailing ships and tugs. Recorded trajectories from sailing ships displayed in Fig. \ref{fig:sailing} reveal meandering behavior and unique tracks in shallow fairway that significantly differ from those of cargo ships or tankers.
-
+\newpage
 \begin{wrapfigure}{r}{0.5\textwidth}
-    \includegraphics[width=0.48\textwidth]{images/ais/tracks/Tugs.png}
+    \includegraphics[width=0.46\textwidth]{images/ais/tracks/Tugs.png}
     \caption{Voyages of tugs.}
     \label{fig:tugs}
 \end{wrapfigure}
-Additionally, (//TODO how much) AIS signals are sent out by tugs which are exceptionally agile, resulting in fast changes to direction and speed as well as quick turns that are visually noticeable in Fig. \ref{fig:tugs}. Although, the filtered dataset "big ships" is shrunk by half, we still expect better results when learning representative trajectories for the reason that the paths themselves are more homogeneous and consistent regarding the sequences of controls (see Fig. \ref{fig:cargoAndBig}). The same applies to the construction of two supplementary datasets that pivot ships that are meant for transportation ("cargo") and ships that carry oil, chemicals or any other fluid or gas ("tanker"). A detailed list of discrete ship types (defined by \textit{myshiptracking.com}) for every category can be discovered in the appendix in section \ref{appendix:datasets}.
-\par
-The "tanker"-dataset is the most restricted and therefore homogeneous dataset assembled. Fig. \ref{fig:tankerTracks} gives a brief overview of included voyages and their course.
+
+Additionally, 700k AIS signals are sent out by tugs which are exceptionally agile, resulting in fast changes to direction and speed as well as quick turns that are visually noticeable in Fig. \ref{fig:tugs}. Although, the filtered dataset "big ships" is shrunk by half, we still expect better results when learning representative trajectories for the reason that the paths themselves are more homogeneous and consistent regarding the sequences of controls (see Fig. \ref{fig:cargoAndBig}). The same applies to the construction of two supplementary datasets that pivot ships that are meant for transportation ("cargo") and ships that carry oil, chemicals or any other fluid or gas ("tanker"). A detailed list of discrete ship types (defined by \textit{myshiptracking.com}) for every category can be discovered in the appendix in section \ref{appendix:datasets}.
 \begin{figure}[H]
     \centering
-    \begin{minipage}{.45\linewidth}
+    \begin{minipage}{.44\linewidth}
             \begin{subfigure}[t]{.9\linewidth}
                 \includegraphics[width=\textwidth]{images/ais/tracks/tanker.png}
                 \caption{300 example voyages}
                 \label{fig:tankerOverview}
             \end{subfigure}
         \end{minipage}
-    \begin{minipage}{.45\linewidth}
+    \begin{minipage}{.44\linewidth}
         \begin{subfigure}[t]{.9\linewidth}
             \includegraphics[width=\textwidth]{images/ais/tracks/tanker_partial.png}
             \caption{Entering harbour}
@@ -48,6 +47,9 @@ The "tanker"-dataset is the most restricted and therefore homogeneous dataset as
     \caption{Overview of the "tanker"-dataset.}
     \label{fig:tankerTracks}
 \end{figure}
+\par
+
+The "tanker"-dataset is the most restricted and therefore homogeneous dataset assembled. Fig. \ref{fig:tankerTracks} gives a brief overview of included voyages and their course.
 Overall, the paths are very clear, meaning that they do not include sudden turns. Furthermore, no obvious outliers can be discovered and ships moving responsively in their respective waterways as shown in \ref{fig:tankerWaterway}.
 
 \begin{figure}[H]
@@ -68,7 +70,7 @@ Overall, the paths are very clear, meaning that they do not include sudden turns
 \end{figure}
 
 
-The relationship and amount of unique ships (MMSIs) and extracted trajectories for each of those composed datasets are shown in upcoming Fig. \ref{fig:datasets}, whereas each set is split by 0.85 in training and test trajectories.
+The relationship between number of unique ships (MMSIs) and extracted trajectories for each of those composed datasets are shown in upcoming Fig. \ref{fig:datasets}, whereas each set is split into training and test trajectories (ratio 85:15).
 \begin{figure}[H]
     \centering
     \hspace*{1cm}%

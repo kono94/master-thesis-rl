@@ -1,5 +1,5 @@
 In a reinforcement learning setup an agent is interacting with an environment $E$ at discrete time steps. At every time step $t$ the agent observes the current state of the environment $s_t$ and selects an action $a_t$. Feedback is returned by the environment in the form of a scalar reward $r_{t+1}$ and the resulting state $s_{t+1}$ based on the intern dynamics of the environment. We will use the definitions of \cite{Sutton1998} throughout this chapter, especially the definition of the point in time the reward is given back. In contrast to other publications like those from \cite{zare2021continuous}, \cite{wiering2012reinforcement} and \cite{lillicrap2019continuous}, \cite{Sutton1998} do not bind the reward signal to the same time step as the current state-action pair ($s_t$, $a_t$) but rather the next one, to indicate that the reward and the next state are calculated at the same time $t+1$.
-This interaction can thus be illustrated in the following way, where uppercase symbols e.g. $A$, $S$ or $R$ are used to indicate non-discrete instances of states, actions or rewards:
+This interaction can thus be illustrated in the following way, where uppercase symbols, e.g., $A$, $S$, or $R$ are used to indicate non-discrete instances of states, actions or rewards:
 \begin{figure}[H]
     \centering
     \hspace*{1cm}%

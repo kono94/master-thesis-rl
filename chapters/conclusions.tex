@@ -1,0 +1,18 @@
+- related work - more "path finders"
+- restricted work for guessing future vessel paths \cite{martinsen2018curved} and \cite{edgardo}
+- exermantated DDPG, the internal workings. 
+Later on the influence of hyperparameters. Replay buffer size, OU Noise parameter
+Failure of DDPG in the synthethetic.
+Increasing replay buffer size does not change outcome. Having a $\sigma$ value above 0.3 impacts negativlely, which is inline of the standard parameters used and in the literature. Theoretical assumption made in terms of different learning rates holds.
+the performances of the separate runs varied significantly
+
+Advance state representation including the distance to the ground.truth performs better accros all hyperparameter setups. Conclude state not markov enoguth. Unable to distinguish between curves. Need better features to determine snapshot of the environment. Unsuitable for the task, we need to inheretly learn from historical descisions. 
+
+
+We then walked on a another approach. Imitation Learning, more precise behavioral cloning. Described the nature, drew parallels to biology and made the assumption that it suits the task better than DDPG.
+
+when applied to the same task of reproducing three arbritary curves, without the need for generization, perfermons well. overfitting.
+
+
+- Real world AIS environment. Important aspect is the dataset of trajectories derived from the historical AIS records. We took the rout of cleaning the data, making the extracted trajectories as clear as possible, without any noticable outliers and long trajectories.
+
