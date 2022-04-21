@@ -6,7 +6,6 @@ The simplest and widely used approach in order to address this problem is the us
     a_t = \mu_\theta(s_t) + \mathcal{N}_t
 \end{equation*}
 \par 
-The resulting value 
 In the original DDPG Paper, \cite{lillicrap2019continuous} suggest the usage of a process that generates temporal correlated noise, specifically the \textit{Ornstein-Uhlenbeck process} (OU process) \cite[]{uhlenbeck1930theory}. The authors justify their decision with the argument that this process very efficiently explores physical control problems with inertia (pp.~4,11). An OU process mainly depends on three variables. The mean of the noise $\mu$, the scale of the noise $\sigma$ and the rate of mean reversion $\theta$. Fig. \ref{fig:ouProcess} illustrates the effect of different hyperparameter settings of $\sigma$ and $\theta$ while the noise oscillates around $\mu=0$. We can see that a high value for $\sigma$ like $0.6$ in conjunction with a moderate value for the mean reversion $\theta$, as displayed in \ref{fig:highSigmaNoise}, results in big swings of the generated noise. Bearing in mind that the last layer of the actor network outputs values between -1 and 1 due to the hyperbolic tangent activation function, we conclude that such a noise parameter setting is unsuitable as adding such a high magnitude of noise to a proposed action will lead to the action eventually getting clipped back to -1 to 1 in most cases, leaving the replay buffer with predominantly extreme action cases. Aiming for an oscillation with a moderate rate of mean reversion ($\theta = 0.15$) and a scale of noise depending on the exploration needed for the task ($\sigma$ between $0.05$ and $0.5$) is the better approach when using the OU as exploration tool for DDPG. In fact, the utilized library for reinforcement learning algorithms, \textit{Stable-Baselines3} (SB3) \cite[]{stable-baselines3}, also suggests a default value of $\theta = 0.15$. In their work, \cite{lillicrap2019continuous} make use of $\theta = 0.15$ and chose $\sigma$ to be $0.2$ (p.~11).
 \begin{figure}[H]
     \begin{subfigure}{0.495\textwidth}
@@ -23,7 +22,9 @@ In the original DDPG Paper, \cite{lillicrap2019continuous} suggest the usage of 
       \caption{$\sigma = 0.6, \theta = 0.15$}
       \label{fig:highSigmaNoise}
     \end{subfigure}
-\medskip % create some *vertical* separation between the graphs
+\end{figure}
+\begin{figure}[H]\ContinuedFloat
+% \medskip % create some *vertical* separation between the graphs
     \begin{subfigure}{0.495\textwidth}
       \centering
       % include first image

@@ -1,8 +1,8 @@
-In order to evaluate the performance across different experiment setups that include deviating reward functions, a unified and comparable metric has to be defined. Again, because the reward functions are up to test and will be switched out during separate runs, as well as the fact that the episodes do not have the same lengths, analyzing based on the collected cumulative reward is not practical. Additionally, when applying behavioral cloning in subchapter \ref{subchap:applyBC}, there is no reward function involved, showing the need for a metric that can also be used to compare different methods.
+In order to evaluate the performance across different experiment setups that include different reward functions, a unified and comparable metric has to be defined. Again, because the reward functions are up to test and will be switched out during separate runs, as well as the fact that the episodes do not have the same lengths, analyzing based on the collected cumulative reward is not practical. Additionally, when applying behavioral cloning in subchapter \ref{subchap:applyBC}, there is no reward function involved, showing the need for a metric that can also be used to compare different methods.
 \par
 Since we do want the agent to follow the GT position as close as possible, we use the average \textit{Euclidean distance} between the proposed paths by the agent and the GT as a performance metric throughout the synthetic and the real-world experiments. In this regard, we will use the word "performance" as synonym for the average euclidean distance.
 \par
-The performance $p$ of the agent during an episode of $n$ time steps can thus be calculated as:
+The performance $p$ of the agent during an episode of $N$ time steps can thus be calculated as:
 \begin{equation}
     p = \frac{1}{N} \sum_{t=0}^{N}\sqrt{(x^{agent}_i - x^{GT}_i)^2 + (y^{agent}_i - y^{GT}_i)^2}
     \label{eq:euclid}

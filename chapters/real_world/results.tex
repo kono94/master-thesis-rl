@@ -1,21 +1,21 @@
-The performance metric is the same as the one used in the synthetic experiments, which is the average euclidean distance, defined by Eq.  \ref{eq:euclid}. This metric is first calculated for each individual trajectory. Afterwards, the final performance indicator, the average of all episodes, is determined.
+The performance metric is the same as the one used in the synthetic experiments, which is the average euclidean distance, defined by Eq.  \ref{eq:euclid}. This metric is first calculated for each individual trajectory. Afterwards, the final performance indicator, the median of all episodes, is determined.
 \par
-For the first set of experiments, we use behavioral cloning with the same network architecture and learning rate which yielded the best results in the synthetic experiment in subchapter \ref{subchap:applyBC}. The network of $n_h^1=256$, $n_h^2=128$ and $n_h^3=64$ is trained for 10 epochs with a learning rate of $\alpha=10^{-5}$ for every dataset. Moreover, the artificially computed values for direction and speed, $S2$ are used in conjunction with the extended action space $A2$, which produce the following outcome:
+For the first set of experiments, we use behavioral cloning with the same network architecture and learning rate which yielded the best results in the synthetic experiment in subchapter \ref{subchap:applyBC}. The network of $n_h^1=256$, $n_h^2=128$ and $n_h^3=64$ is trained for 10 epochs with a learning rate of $\alpha=10^{-5}$ for every dataset. Moreover, the artificially computed values for direction and speed, $S2$ are used in conjunction with the extended action space $A2$. The outcome is shown in the following table, where the symbol $\pm$ separates the mean from the standard deviation, the absolute deviation from the median is abbreviated as "MAD", and all values are in meters.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{|l|l|l|}
+\begin{tabular}{|l|l|l|l|}
 \hline
-\textbf{Dataset} & \textbf{Performance (meters)}  & \textbf{Median} \\ \hline
-All Ships        & $2171 \pm 2008$                & $1582$          \\ \hline
-Big Ships        & $2136 \pm 2862$                & $707$           \\ \hline
-Cargo            & $2909 \pm 2471$                & $2009$          \\ \hline
-Tanker           & $2572 \pm 2201$ & $1920$          \\ \hline
+\textbf{Dataset} & \textbf{\begin{tabular}[c]{@{}l@{}}Performance \\ (Median)\end{tabular}}  & \textbf{MAD} & \textbf{Mean} \\ \hline
+All Ships        & $1582$          & $1011$ &  $2171 \pm 2008$                \\ \hline
+Big Ships        & $707$      & $476$ & $2136 \pm 2862$                     \\ \hline
+Cargo             & $2209$        & $1441$& $2909 \pm 2471$                 \\ \hline
+Tanker           & $1920$      & $1052$ & $2572 \pm 2201$     \\ \hline
 \end{tabular}
 \caption{Final performances using behavioral cloning for every test dataset, trained for 10 epochs.}
 \label{tab:rlResults1}
 \end{table}
-The results in Tab. \ref{tab:rlResults1} are extremely poor throughout all established datasets and their respective group of ship types. Since the overall average distances from the agent's generated positions and the ground-truth is more than 2000 meters, disregarding the dataset, this model can not be classified as robust or accurate. High standard deviations also show huge fluctuation when in comes to the performance of distinct trajectories. While further analyzing the outcome, we visualize the percentage of paths falling into certain buckets of performances. Figure \ref{fig:resultssBar} presents these results, where the y-axis represents the amount of trajectories in percent and the x-axis combines the performances in buckets of distances in kilometers. Only the most left bucket which indicates an average distance to the GT of less than 500 meters can be seen as "good" and empirically practical with a decent chance of improvements boosting the accuracy in further steps. Again, the overall task of this thesis is the composition of a system that is capable of generating accurate ship path predictions in time for the sake of anomaly detection and especially collision avoidance. Having an error-tolerance of 500 meters or more is unacceptable for this kind of solution.
+The results in Tab. \ref{tab:rlResults1} are poor throughout all established datasets and their respective group of ship types when looking at the averages. Since the overall average distances from the agent's generated positions and the ground-truth is more than 2000 meters, disregarding the dataset, this model can not be classified as robust or accurate. High standard deviations also show huge fluctuation when it comes to the performance of distinct trajectories. When looking at the median values, which are less bias and less susceptible to outliers, we can see that the best results are achieved by using the "big-ships"-dataset. We reason that this dataset is the best suitable for learning in general because it excludes certain outliers in ship types but still offers a large amount of training data, in contrast to the "cargo"- and "tanker"-datasets. While further analyzing the outcome, we visualize the percentage of paths falling into certain buckets of performances. Figure \ref{fig:resultssBar} presents these results, where the y-axis represents the amount of trajectories in percent and the x-axis combines the performances in buckets of distances in kilometers. Only the most left bucket which indicates an average distance to the GT of less than 500 meters can be seen as mediocre and empirically practical with a decent chance of improvements boosting the accuracy in further steps to the acceptable threshold of 300 defined in the beginning of this chapter. Again, the overall task of this thesis is the composition of a system that is capable of generating accurate ship path predictions in time for the sake of anomaly detection and especially collision avoidance. Having an error-tolerance of, e.g., 500 meters or more is unacceptable for this kind of solution.
 \begin{figure}[H]
      \centering
      \begin{subfigure}[b]{0.496\textwidth}
@@ -47,9 +47,9 @@ The results in Tab. \ref{tab:rlResults1} are extremely poor throughout all estab
 
 \end{figure}
 
-From the raw numbers presented in Tab. \ref{tab:rlResults1} and the bar plots of Fig. \ref{fig:resultssBar}, behavioral cloning does work best on the "big ships"-dataset and worst on the "cargo"-dataset. However, this is a fallacy as those numbers are not exactly comparable due to the differences in overall trajectory lengths of the distinct datasets. The "cargo"- and "tanker"-datasets predominantly consist of very long ship voyages of more than 10 kilometers. Empirical investigations of the agent's behavior when generating paths show that it is certainly possible that it diverges from the GT right at the beginning, resulting in huge distance values and hence a very bad performance. The longer the voyages, the higher are the drawbacks in performance when the model is too fragile in its predictions.
+The raw numbers presented in Tab. \ref{tab:rlResults1} and the bar plots of Fig. \ref{fig:resultssBar} suggest, that behavioral cloning does work best on the "big ships"-dataset and worst on the "cargo"-dataset. However, those numbers are not exactly comparable due to the differences in overall trajectory lengths of the distinct datasets. The average trajectory length of the "cargo"-dataset is 14502 meters, whereas the average is 7848 meters for the "big ships"-dataset. Empirical investigations of the agent's behavior when generating paths show that it is certainly possible that it diverges from the GT right at the beginning, resulting in huge distance values and hence a very bad performance. The longer the voyages, the higher are the drawbacks in performance when the model is too fragile in its predictions.
 \par
-Instead of further analyzing those terrible results, we rather test other assumptions and different experiment setups to see if any improvements can be made. We conducted more than 40 different experiment runs, investigating the influence of network architectures, state representation and action space, time gaps between the AIS records and the amount of training epochs. A portion of those examinations are shown in Tab \ref{tab:rlResults2}. We will refer to single experiments by their respective ID column.
+Instead of further analyzing those poor results, we rather test other assumptions and different experiment setups to see if any improvements can be made. We conducted more than 40 different experiment runs, investigating the influence of network architectures, state representation and action space, time gaps between the AIS records and the amount of training epochs. A portion of those examinations are shown in Tab \ref{tab:rlResults2}. We will refer to single experiments by their respective ID column.
 \begin{table}[H]
 \centering
 \begin{tabular}{|l|l|l|l|l|l|l|l|}
@@ -60,40 +60,40 @@ Instead of further analyzing those terrible results, we rather test other assump
   \textbf{Gap} &
   \textbf{Network} &
   \textbf{Ep.} &
-  \textbf{\begin{tabular}[c]{@{}l@{}}Performance \\ (meters)\end{tabular}} &
-  \textbf{Med.} \\ \hline
-1  & Tanker & $S2\_A2$ & $10s$ & $256-128$          & $30$   & $2884 \pm 2889$ & $1956$ \\ \hline
-2  & Tanker & $S2\_A2$ & $10s$ & $512-256-128-64$   & $100$  & $1990 \pm 1924$ & $1412$ \\ \hline
-3  & Tanker & $S2\_A1$ & $10s$ & $4096-2048-256-32$ & $7$    & $2024 \pm 1964$  & $1395$ \\ \hline
-4  & Tanker & $S2\_A1$ & $1s$  & $4096-2048-256-32$ & $7$    & $8103 \pm 4859$ & $8226$ \\ \hline
-5  & Tanker & $S2\_A2$ & $60s$ & $256-128$          & $1000$ & $2574 \pm 3255$ & $1306$ \\ \hline
+  \textbf{\begin{tabular}[c]{@{}l@{}}Perf. \\ (Med.)\end{tabular}} &
+  \textbf{Mean} \\ \hline
+1  & Tanker & $S2\_A2$ & $10s$ & $256-128$          & $30$   & $1956$  & $2884 \pm 2889$\\ \hline
+2  & Tanker & $S2\_A2$ & $10s$ & $512-256-128-64$   & $100$  & $1412$ & $1990 \pm 1924$ \\ \hline
+3  & Tanker & $S2\_A1$ & $10s$ & $4096-2048-256-32$ & $7$     & $1395$ & $2024 \pm 1964$ \\ \hline
+4  & Tanker & $S2\_A1$ & $1s$  & $4096-2048-256-32$ & $7$    & $8226$  & $8103 \pm 4859$\\ \hline
+5  & Tanker & $S2\_A2$ & $60s$ & $256-128$          & $1000$ & $1306$ & $2574 \pm 3255$ \\ \hline
 6 &
   Tanker &
   \begin{tabular}[c]{@{}l@{}}$S2\_A2$\\ unscaled\end{tabular} &
   $60s$ &
   $256-128$ &
-  $1000$ &
-  $1955 \pm 2415$ &
-  $1038$ \\ \hline
-7  & Tanker & $S2\_A2$ & $60s$ & $256-128$          & $20$   & $2277 \pm 2407$ & $1086$ \\ \hline
-8  & Cargo  & $S1\_A1$ & $10s$ & $256-128-64$       & $30$   & $4232 \pm 3172$ & $3341$ \\ \hline
-9  & Cargo  & $S1\_A1$ & $10s$ & $256-128$          & $20$   & $4872 \pm 3378$ & $4050$ \\ \hline
-10 & Cargo  & $S2\_A1$ & $10s$ & $1024-512-256$     & $3$    & $4247 \pm 3557$ & $3294$ \\ \hline
-11 & Cargo  & $S2\_A1$ & $10s$ & $32-64-32$         & $50$   & $3295 \pm 2640$ & $2681$ \\ \hline
+  $1000$  &
+  $1038$ &
+  $1955 \pm 2415$\\ \hline
+7  & Tanker & $S2\_A2$ & $60s$ & $256-128$          & $20$  & $1086$  & $2277 \pm 2407$ \\ \hline
+8  & Cargo  & $S1\_A1$ & $10s$ & $256-128-64$       & $30$   & $3341$ & $4232 \pm 3172$ \\ \hline
+9  & Cargo  & $S1\_A1$ & $10s$ & $256-128$          & $20$   & $4050$  & $4872 \pm 3378$\\ \hline
+10 & Cargo  & $S2\_A1$ & $10s$ & $1024-512-256$     & $3$     & $3294$ & $4247 \pm 3557$\\ \hline
+11 & Cargo  & $S2\_A1$ & $10s$ & $32-64-32$         & $50$   & $2681$  & $3295 \pm 2640$\\ \hline
 \end{tabular}
 \caption{Extended experiment results}
 \label{tab:rlResults2}
 \end{table}
 
-The first round of experiments were conducted with the artificially calculated values for direction and speed ($S2$) instead of using the interpolated values of course over ground and speed over ground as given by the AIS signal ($S1$). Additionally, the extended action space ($A2$) was used, which is purely built on the assumption illustrated in Fig. \ref{}. Switching to a setup of $S1$ and two-dimensional action space $A1$ as in the experiments with IDs 8 and 9 however, shows an enormous decrease in performance (from an average distance of $2909$ to $4232$). This proves that the general approach of using direction and speed values solely derived from the locations given by the AIS signal and the usage of the extended action space is indeed beneficial. It is also the reason as to why we mainly focus on the $S2\_A2$ representation for the majority of the experiment runs.
+The first round of experiments were conducted with the artificially calculated values for direction and speed ($S2$) instead of using the interpolated values of course over ground and speed over ground as given by the AIS signal ($S1$). Additionally, the extended action space ($A2$) was used, which is purely built on the assumption illustrated in Fig. \ref{fig:explanation}. Switching to a setup of $S1$ and two-dimensional action space $A1$ as in the experiments with IDs 8 and 9 however, shows an enormous decrease in performance (from an average distance of $2909$ to $4232$). This proves that the general approach of using direction and speed values solely derived from the locations given by the AIS signal and the usage of the extended action space is indeed beneficial. It is also the reason as to why we mainly focus on the $S2\_A2$ representation for the majority of the experiment runs.
 \par
-Another assumption to be made is that the amount of neurons is insufficient, or the network architecture is suboptimal or unsuitable for the task. Significantly increasing the amount of neurons in the hidden layers and adding a fourth layer, as in experiment 3, does not show a major improvement. The agent still produces predictions that have an average distance of more than 2000 meters. However, the network architecture does play a huge role, and we will dive deeper into possible improvements to the network architecture in the next subchapter \ref{subchap:failure}.
+Another assumption to be made is that the amount of neurons is insufficient, or the network architecture is suboptimal or unsuitable for the task. Significantly increasing the amount of neurons in the hidden layers and adding a fourth layer, as in experiment 3, does not show a major improvement. The agent still produces predictions that have an average distance of more than 2000 meters.
 \par
 All datasets are initially prepared to have a fixed time interval between consecutive AIS records of 10 seconds. The resampling is done together with linear interpolation. The idea behind this operation is that the agent incorporates time without explicitly knowing whenever it proposes an action. A hypothesis could be that the accuracy can be improved by increasing the time gap, which will reduce the number of actions the agent has to learn in order to produce a suitable trajectory. Contrary to that, a decrease of the time gaps could be beneficial because it reduces the magnitude of change in action values of consecutive decisions. Though, increasing the time interval to 60 seconds (ID 5) or reducing it to just 1 second (ID 4) does not show any improvements. Instead, the experiment with 1 second time gaps performs significantly worse than the comparable setup of ID 3 ($8103$ to $2024$).
 \par
-Increasing the number of epochs and hence the training time, as well as unscaling the state and action space neither increases the accuracy of predictions nor the robustness of the model.
+Increasing the number of epochs and hence the training time, as well as unscaling the state and action space, neither increases the accuracy of predictions nor the robustness of the model.
 \par
-Before closing out this chapter, we will present measurements that are sampled in regard to the requirement of retaining low computation costs, as defined in subchapter \ref{subchap:objective}. 1000 trajectories from the "tanker"-dataset have to be predicted by the system in order to get meaningful results. The iterations are conducted on a \textit{AMD Ryzen 7 3700X} 8-core processor running at 3.60 GHz. Initially, we generate the paths using a network structure of $n_h^1=256, n_h^2=128$ and therefore $34825$ trainable parameters. On average, a single prediction of the whole trajectory takes $120.544 \pm 0.936$ milliseconds. The change to a more complex model with $n_h1=1024, n_h^2=512, n_h^3=256$ and $662537$ trainable parameters shows that the size of the neuronal network is not the primary factor of the consumed time. Here, a single generation of a future vessel path takes $136.567 \pm 1.838$ milliseconds. An increase of 13\% while the amount of parameters multiplied by a factor of 19. This is an expected condition because the environment includes calculations based on the transition dynamics, e.g., the computation of the next agent position. The results prove that a system based on behavioral cloning and the MDP framework is feasible in terms of its computation costs. Especially, due to the fact that it is easily scalable if numerous, independent instances run in parallel on multiple cores.
+Before closing out this chapter, we will present measurements that are sampled in regard to the requirement of retaining low computation costs, as defined in subchapter \ref{subchap:objective}. 1000 trajectories from the "tanker"-dataset have to be predicted by the system in order to get meaningful results. The iterations are conducted on an \textit{AMD Ryzen 7 3700X} 8-core processor running at 3.60 GHz. Initially, we generate the paths using a network structure of $n_h^1=256, n_h^2=128$ and therefore 34825 trainable parameters. On average, a single prediction of the whole trajectory takes $120.544 \pm 0.936$ milliseconds. The change to a more complex model with $n_h1=1024, n_h^2=512, n_h^3=256$ and 662537 trainable parameters shows that the size of the neuronal network is not the primary factor of the consumed time. Here, a single generation of a future vessel path takes $136.567 \pm 1.838$ milliseconds. An increase of 13\% while the amount of parameters multiplied by a factor of 19. This is an expected condition because the environment includes calculations based on the transition dynamics, e.g., the computation of the next agent position. The results prove that a system based on behavioral cloning and the MDP framework is feasible in terms of its computation costs. Especially, due to the fact that it is easily scalable if numerous, independent instances run in parallel on multiple cores.
 \par
 Unfortunately, this chapter's conclusion is, that behavioral cloning and the experimental setup are not capable of providing acceptable predictions.
-Changing the state representation or action space, the network architecture, the time gaps between AIS records, the scaling of values and the training time did not show any significant improvements to the task. To confirm that our implementation is correct and in order to test if the general approach is in any way applicable of forecasting vessel trajectories, we proceed with deeper analysis in the next chapter. 
+Changing the state representation or action space, the network architecture, the time gaps between AIS records, the (non)-scaling of values and the training time did not show any significant improvements to the task. To confirm that our general approach is correct and applicable of forecasting vessel trajectories, we proceed with deeper analysis in the next chapter. We will see that the initial state representation used in this chapter is missing crucial information, which causes the poor results. 

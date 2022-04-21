@@ -7,13 +7,13 @@ The previous chapter described how to build a dataset which contains a collectio
     \label{fig:shipTypes}
 \end{figure}
 
-As already mentioned in subchapter \ref{subchap:curveEnv}, \cite{venskus2021unsupervised} construct separate computational models depending on the deviating ship types, as they found out that individual vessel types generate different traffic patterns (p.~729). We adhere to this idea and will assemble multiple datasets depending on different ship categories.Here, we do not split by distinct types, but rather a group of types. 
+As already mentioned in subchapter \ref{subchap:curveEnv}, \cite{venskus2021unsupervised} construct separate computational models depending on the different ship types, as they found out that individual vessel types generate different traffic patterns (p.~729). We adhere to this idea and assemble multiple datasets depending on different ship categories. Here, we do not split by distinct types, but rather a group of types. The first deviation from the dataset which
 \begin{wrapfigure}{l}{0.5\textwidth}
     \includegraphics[width=0.48\textwidth]{images/ais/tracks/Sailing.png}
     \caption{Voyages of sailing ships.}
     \label{fig:sailing}
 \end{wrapfigure}
-The first deviation from the dataset which we call "big ships" focuses on a big variety of different ship models including e.g., cargo- and passenger ships, dredgers, and tankers.
+we call "big ships" focuses on a big variety of different ship models including e.g., cargo- and passenger ships, dredgers, and tankers.
 In contrast to the original dataset, ship types that are very dissimilar in terms of propulsion or tend to conduct rapid turning maneuvers get filtered out. Examples for those kinds of ship types are sailing ships and tugs. Recorded trajectories from sailing ships displayed in Fig. \ref{fig:sailing} reveal meandering behavior and unique tracks in shallow fairway that significantly differ from those of cargo ships or tankers.
 \newpage
 \begin{wrapfigure}{r}{0.5\textwidth}
@@ -50,7 +50,7 @@ Additionally, 700k AIS signals are sent out by tugs which are exceptionally agil
 \par
 
 The "tanker"-dataset is the most restricted and therefore homogeneous dataset assembled. Fig. \ref{fig:tankerTracks} gives a brief overview of included voyages and their course.
-Overall, the paths are very clear, meaning that they do not include sudden turns. Furthermore, no obvious outliers can be discovered and ships moving responsively in their respective waterways as shown in \ref{fig:tankerWaterway}.
+Overall, the paths are very smooth, meaning that they do not include sudden turns. Furthermore, no obvious outliers can be discovered and ships moving responsively in their respective waterways as shown in \ref{fig:tankerWaterway}.
 
 \begin{figure}[H]
      \centering
